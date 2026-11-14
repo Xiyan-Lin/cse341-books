@@ -14,7 +14,11 @@ const fakeDb = (fail = false) => {return {
         if (fail) throw new Error('private database error');
         return records;
       }
-    }}
+    }},
+    findOne: async ({ id }) => {
+      if (fail) throw new Error('private database error');
+      return records.find((record) => {return record.id === id}) || null;
+    }
   }}
 }};
 
@@ -41,8 +45,26 @@ test('GET /books returns JSON array with HTTP 200', async () => {
   assert.deepEqual(result.body, records);
 });
 
+test('GET /books/b1 returns the right book', async () => {
+  const result = await request(fakeDb(), '/books/b1');
+  assert.equal(result.status, 200);
+  assert.deepEqual(result.body, records[0]);
+});
+
+test('GET /books/missing returns HTTP 404', async () => {
+  const result = await request(fakeDb(), '/books/missing');
+  assert.equal(result.status, 404);
+  assert.deepEqual(result.body, { message: 'Book not found' });
+});
+
 test('GET /books returns safe HTTP 500 message', async () => {
   const result = await request(fakeDb(true), '/books');
+  assert.equal(result.status, 500);
+  assert.deepEqual(result.body, { message: 'Internal server error' });
+});
+
+test('GET /books/b1 returns safe HTTP 500 message', async () => {
+  const result = await request(fakeDb(true), '/books/b1');
   assert.equal(result.status, 500);
   assert.deepEqual(result.body, { message: 'Internal server error' });
 });

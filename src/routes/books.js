@@ -6,6 +6,7 @@ const createBooksRouter = (getDatabase) => {
   const controller = createBooksController(getDatabase);
 
   router.get('/', controller.listBooks);
+  router.get('/:id', controller.getBook);
   return router;
 };
 

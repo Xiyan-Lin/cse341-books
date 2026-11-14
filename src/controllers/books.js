@@ -1,5 +1,6 @@
-import { getAllBooks } from '../models/books.js';
+import { getAllBooks, getBookById } from '../models/books.js';
 
+// Dependency injection keeps controllers testable without Atlas access.
 const createBooksController = (getDatabase) => {
   const listBooks = async (req, res) => {
     try {
@@ -11,7 +12,20 @@ const createBooksController = (getDatabase) => {
     }
   };
 
-  return { listBooks };
+  const getBook = async (req, res) => {
+    try {
+      const book = await getBookById(getDatabase(), req.params.id);
+      if (!book) {
+        return res.status(404).json({ message: 'Book not found' });
+      }
+      return res.status(200).json(book);
+    } catch (error) {
+      console.error('Failed to retrieve book:', error.message);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+  return { listBooks, getBook };
 };
 
 export { createBooksController };
