@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  title: CSE341 Books Web Service — W01 Existing API Baseline
+  version: 1.0.0
+  description: Existing W01 routes only. New W02 requirements have not been verified.
+servers:
+  - url: http://localhost:3000
+    description: Local development
+paths:
+  /books:
+    get:
+      summary: List all books
+      responses:
+        '200':
+          description: JSON array of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '500':
+          description: Safe general error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /books/{id}:
+    get:
+      summary: Get book by public ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: b1
+      responses:
+        '200':
+          description: Book returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Safe general error message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Book:
+      type: object
+      required: [id, author, title, publicationDate]
+      properties:
+        id:
+          type: string
+          example: b1
+        author:
+          type: string
+          example: Jane Austen
+        title:
+          type: string
+          example: Pride and Prejudice
+        publicationDate:
+          type: string
+          example: '1813-01-28'
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          example: Book not found
