@@ -20,14 +20,19 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "node --test",
-    "seed": "node --env-file=.env scripts/seed-books.js"
+    "seed": "node --env-file=.env scripts/seed-books.js",
+    "swagger": "node swagger.js",
+    "migrate:w02": "node --env-file=.env scripts/migrate-week02.js",
+    "seed:authors": "node --env-file=.env scripts/seed-authors.js"
   },
   "dependencies": {
     "express": "^5.3.0",
-    "mongodb": "^7.9.0"
+    "mongodb": "^7.9.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "eslint": "^10.14.0",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "swagger-jsdoc": "^6.2.8"
   }
 }
