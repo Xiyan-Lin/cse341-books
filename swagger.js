@@ -17,9 +17,9 @@ const options = {
           properties: { id: { type: 'string' }, name: { type: 'string' }, birthYear: { type: 'integer' } }
         },
         Book: {
-          type: 'object', required: ['id', 'author', 'title', 'publicationDate'],
+          type: 'object', required: ['id', 'authorId', 'title', 'publicationDate'],
           properties: {
-            id: { type: 'string' }, author: { type: 'string' },
+            id: { type: 'string' }, authorId: { type: 'string' },
             title: { type: 'string' }, publicationDate: { type: 'string' }
           }
         },
